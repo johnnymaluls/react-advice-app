@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import axios from 'axios'
+import loadingImage from './giphy.gif'
 
 export class Advice extends Component {
     constructor(props) {
@@ -7,12 +8,14 @@ export class Advice extends Component {
 
         this.state = {
             advice: '',
-            id: 5
+            id: 5,
+            isPending: true
         }
     }
 
     componentDidMount() {
         this.fetchAdvice();
+
     }
 
     fetchAdvice = () => {
@@ -22,6 +25,7 @@ export class Advice extends Component {
                 const { advice } = data.slip;
                 //const { advice } = response.data.slip;
                 this.setState({ advice: advice })
+                this.setState({ isPending: false })
                 console.log(response)
             })
             .catch((error) => {
@@ -40,10 +44,15 @@ export class Advice extends Component {
     }
 
     render() {
-        const { advice } = this.state
+        const { advice, isPending } = this.state
 
         return (
+
+
             <div className="appli">
+                {isPending && <div id="loading">
+                    <img id="loading-image" src={loadingImage} alt="Loading..." />
+                </div>}
                 <div className="head">
                     <h1 className="title">SILLY ADVICE</h1>
                 </div>
